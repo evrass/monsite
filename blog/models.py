@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models 
 from django.urls import reverse 
 from django.utils import timezone 
+from taggit.managers import TaggableManager 
 
 class PublishedManager(models.Manager): 
     def get_queryset(self): 
@@ -9,6 +10,7 @@ class PublishedManager(models.Manager):
         super().get_queryset().filter(status=Post.Status.PUBLISHED) 
         ) 
 
+#Creer un modele pour les articles de Blog
 class Post(models.Model): 
     class Status(models.TextChoices): 
        DRAFT = 'DF', 'Draft' 
@@ -37,6 +39,8 @@ class Post(models.Model):
     
     objects = models.Manager() # The default manager. 
     published = PublishedManager() # Our custom manager. 
+    tags = TaggableManager() # For tagging the posts.
+
     
     class Meta: 
         ordering = ['-publish'] 
